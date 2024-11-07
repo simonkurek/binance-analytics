@@ -12,4 +12,8 @@ export class BinanceService {
   async getExchangeInfo() {
     await this.client.exchangeInfo();
   }
+
+  async getDailyStats(symbol: string) {
+    return await this.client.dailyStats({ symbol });
+  }
 }
