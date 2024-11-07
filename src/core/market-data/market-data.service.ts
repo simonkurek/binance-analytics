@@ -16,21 +16,18 @@ export class MarketDataService {
   async fetchDailyMarketChange() {
     const data = await this.binance.getDailyStats(TRADING_SYMBOL);
     if (Array.isArray(data)) {
-      const promises = data.map((symbol) => this.saveDifference(symbol));
+      const promises = data.map((symbol) => this.saveEntry(symbol));
       await Promise.all(promises);
       return;
     }
-    await this.saveDifference(data);
+    await this.saveEntry(data);
   }
 
-  async generateAnalytics(symbolName: string, fromDate: Date) {
-    const symbolEntries = await this.repository.getHistoricData(
-      symbolName,
-      fromDate,
-    );
+  async getEntries(symbolName: string, fromDate: Date) {
+    return await this.repository.getHistoricData(symbolName, fromDate);
   }
 
-  private async saveDifference(symbolMarketData: DailyStatsResult) {
+  private async saveEntry(symbolMarketData: DailyStatsResult) {
     const dailyChangePercent = parseInt(symbolMarketData.priceChange);
     const lastPrice = parseInt(symbolMarketData.lastPrice);
     if (!dailyChangePercent || !lastPrice) {
@@ -40,6 +37,7 @@ export class MarketDataService {
       symbol: symbolMarketData.symbol,
       dailyChangePercent,
       lastPrice,
+      date: new Date(),
     });
   }
 }
