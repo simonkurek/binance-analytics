@@ -10,7 +10,7 @@ export class MarketDataRepository {
     private symbolHistoricEntryModel: Model<SymbolHistoricEntry>,
   ) {}
 
-  async create(symbolEntry: SymbolHistoricEntry) {
+  async create(symbolEntry: Omit<SymbolHistoricEntry, 'date'>) {
     const entry = new this.symbolHistoricEntryModel(symbolEntry);
     return await entry.save();
   }

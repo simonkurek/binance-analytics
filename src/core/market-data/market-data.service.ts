@@ -37,7 +37,6 @@ export class MarketDataService implements OnModuleInit {
       symbol: symbolMarketData.symbol,
       dailyChangePercent,
       lastPrice,
-      date: new Date(),
     });
   }
 
