@@ -14,4 +14,11 @@ export class MarketDataRepository {
     const entry = new this.symbolHistoricEntryModel(symbolEntry);
     return await entry.save();
   }
+
+  async getHistoricData(symbolName: string, days: number) {
+    return await this.symbolHistoricEntryModel.findOne({
+      symbol: symbolName,
+      $where: {},
+    });
+  }
 }

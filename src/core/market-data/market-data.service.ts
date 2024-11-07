@@ -23,6 +23,14 @@ export class MarketDataService {
     await this.saveDifference(data);
   }
 
+  async generateAnalytics(
+    symbolName: string,
+    threshold: number,
+    days: number = 1,
+  ) {
+    const symbolEntries = await this.repository.getHistoricData(symbolName);
+  }
+
   private async saveDifference(symbolMarketData: DailyStatsResult) {
     const dailyChangePercent = parseInt(symbolMarketData.priceChange);
     const lastPrice = parseInt(symbolMarketData.lastPrice);
