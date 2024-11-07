@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { BinanceService } from 'src/infrastructure/binance/binance.service';
 import { TRADING_SYMBOL } from './market-data.consts';
@@ -6,7 +6,7 @@ import { DailyStatsResult } from 'binance-api-node';
 import { MarketDataRepository } from './market-data.repository';
 
 @Injectable()
-export class MarketDataService {
+export class MarketDataService implements OnModuleInit {
   constructor(
     private readonly binance: BinanceService,
     private readonly repository: MarketDataRepository,
@@ -39,5 +39,9 @@ export class MarketDataService {
       lastPrice,
       date: new Date(),
     });
+  }
+
+  async onModuleInit() {
+    await this.fetchDailyMarketChange();
   }
 }
