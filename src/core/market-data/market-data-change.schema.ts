@@ -1,9 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument, now } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
 
 export type SymbolHistoricEntryDocument = HydratedDocument<SymbolHistoricEntry>;
 
-@Schema()
+@Schema({ timestamps: true })
 export class SymbolHistoricEntry {
   @Prop()
   symbol: string;
@@ -13,9 +13,6 @@ export class SymbolHistoricEntry {
 
   @Prop()
   dailyChangePercent: number;
-
-  @Prop({ default: now(), required: false })
-  date: Date;
 }
 
 export const SymbolHistoricEntrySchema =

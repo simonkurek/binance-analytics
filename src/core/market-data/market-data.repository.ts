@@ -18,7 +18,7 @@ export class MarketDataRepository {
   async getHistoricData(symbolName: string, fromDate: Date) {
     return await this.symbolHistoricEntryModel.find({
       symbol: symbolName,
-      date: {
+      createdAt: {
         $gte: new Date(new Date(fromDate).setHours(0, 0, 0)),
         $lte: new Date(),
       },

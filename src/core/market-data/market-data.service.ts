@@ -28,8 +28,8 @@ export class MarketDataService implements OnModuleInit {
   }
 
   private async saveEntry(symbolMarketData: DailyStatsResult) {
-    const dailyChangePercent = parseInt(symbolMarketData.priceChange);
-    const lastPrice = parseInt(symbolMarketData.lastPrice);
+    const dailyChangePercent = +symbolMarketData.priceChangePercent;
+    const lastPrice = +symbolMarketData.lastPrice;
     if (!dailyChangePercent || !lastPrice) {
       throw new Error('BinanceAPI: Invalid priceChange or lastPrice');
     }

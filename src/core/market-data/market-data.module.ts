@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BinanceModule } from 'src/infrastructure/binance/binance.module';
-import { SymbolHistoricEntry } from './market-data-change.schema';
+import {
+  SymbolHistoricEntry,
+  SymbolHistoricEntrySchema,
+} from './market-data-change.schema';
 import { MarketDataService } from './market-data.service';
 import { MarketDataRepository } from './market-data.repository';
 
@@ -9,7 +12,7 @@ import { MarketDataRepository } from './market-data.repository';
   imports: [
     BinanceModule,
     MongooseModule.forFeature([
-      { name: SymbolHistoricEntry.name, schema: SymbolHistoricEntry },
+      { name: SymbolHistoricEntry.name, schema: SymbolHistoricEntrySchema },
     ]),
   ],
   providers: [MarketDataService, MarketDataRepository],
