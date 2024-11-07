@@ -15,10 +15,13 @@ export class MarketDataRepository {
     return await entry.save();
   }
 
-  async getHistoricData(symbolName: string, days: number) {
-    return await this.symbolHistoricEntryModel.findOne({
+  async getHistoricData(symbolName: string, fromDate: Date) {
+    return await this.symbolHistoricEntryModel.find({
       symbol: symbolName,
-      $where: {},
+      date: {
+        $gte: new Date(new Date(fromDate).setHours(0, 0, 0)),
+        $lte: new Date(),
+      },
     });
   }
 }

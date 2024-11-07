@@ -23,12 +23,11 @@ export class MarketDataService {
     await this.saveDifference(data);
   }
 
-  async generateAnalytics(
-    symbolName: string,
-    threshold: number,
-    days: number = 1,
-  ) {
-    const symbolEntries = await this.repository.getHistoricData(symbolName);
+  async generateAnalytics(symbolName: string, fromDate: Date) {
+    const symbolEntries = await this.repository.getHistoricData(
+      symbolName,
+      fromDate,
+    );
   }
 
   private async saveDifference(symbolMarketData: DailyStatsResult) {
