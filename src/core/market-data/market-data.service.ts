@@ -3,10 +3,14 @@ import { Cron } from '@nestjs/schedule';
 import { BinanceService } from 'src/infrastructure/binance/binance.service';
 import { TRADING_SYMBOL } from './market-data.consts';
 import { DailyStatsResult } from 'binance-api-node';
+import { MarketDataRepository } from './market-data.repository';
 
 @Injectable()
 export class MarketDataService {
-  constructor(private readonly binance: BinanceService) {}
+  constructor(
+    private readonly binance: BinanceService,
+    private readonly repository: MarketDataRepository,
+  ) {}
 
   @Cron('0 1 * * *')
   async fetchDailyMarketChange() {
@@ -19,5 +23,16 @@ export class MarketDataService {
     await this.saveDifference(data);
   }
 
-  private async saveDifference(symbolMarketData: DailyStatsResult) {}
+  private async saveDifference(symbolMarketData: DailyStatsResult) {
+    const dailyChangePercent = parseInt(symbolMarketData.priceChange);
+    const lastPrice = parseInt(symbolMarketData.lastPrice);
+    if (!dailyChangePercent || !lastPrice) {
+      throw new Error('BinanceAPI: Invalid priceChange or lastPrice');
+    }
+    await this.repository.create({
+      symbol: symbolMarketData.symbol,
+      dailyChangePercent,
+      lastPrice,
+    });
+  }
 }
